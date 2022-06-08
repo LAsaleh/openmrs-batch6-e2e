@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
+import java.util.List;
 
 public class HomePage {
 
@@ -28,6 +29,36 @@ public class HomePage {
 
     @FindBy(xpath = "//h4[contains(text(),'admin')]")
     private WebElement headerAccountName;
+
+    @FindBy(xpath = "//div[@id='navbarSupportedContent']//li")
+    private List<WebElement> topOptions;
+
+
+    @FindBy(xpath = "//div[@id='apps']//a")
+    private List<WebElement> homePageFunctionality;
+
+
+    public void verifyHomeActions() {
+
+        String[] functionality = {"Find Patient Record", "Active Visits", "Register a patient", "Capture Vitals"," Appointment Scheduling",
+           "Reports", "Data Management","Configure Metadata","System Administration"};
+
+        softAssert.assertEquals(driver.getTitle(), "Home");
+        softAssert.assertEquals(iconAccountName.getText().trim().toLowerCase(), "admin");
+        softAssert.assertEquals(headerAccountName.getText().trim().toLowerCase(), "admin");
+        softAssert.assertEquals(topOptions.size(), 4);
+
+
+        softAssert.assertEquals(homePageFunctionality.size(), 9);
+        for (int i = 0; i < homePageFunctionality.size(); i++) {
+            softAssert.assertEquals(homePageFunctionality.get(i).getText(), functionality[i]);
+
+        }
+
+        homePageFunctionality.get(2).click();
+
+
+    }
 
 
 }

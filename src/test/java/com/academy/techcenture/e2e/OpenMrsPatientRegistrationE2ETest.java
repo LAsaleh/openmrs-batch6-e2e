@@ -2,6 +2,7 @@ package com.academy.techcenture.e2e;
 
 import com.academy.techcenture.config.ConfigReader;
 import com.academy.techcenture.config.Driver;
+import com.academy.techcenture.pages.HomePage;
 import com.academy.techcenture.pages.LoginPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.BeforeMethod;
@@ -24,7 +25,9 @@ public class OpenMrsPatientRegistrationE2ETest {
     public void testRun(){
 
         LoginPage loginPage = new LoginPage(driver, softAssert);
+        HomePage homePage= new HomePage(driver, softAssert);
         loginPage.logIn();
+        homePage.verifyHomeActions();
 
 
     }
