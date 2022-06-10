@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
+import java.util.Map;
 
 public class RegisterPage {
 
@@ -42,7 +43,50 @@ public class RegisterPage {
     @FindBy(id="gender-field")
     private WebElement genderField;
 
+    @FindBy(id="birthdateDay-field")
+    private WebElement birthday;
+
+    @FindBy( id="birthdateMonth-field" )
+    private WebElement birthdayMonth;
+
+    @FindBy( id="birthdateYear-field")
+    private WebElement birthdayYear;
+
+    @FindBy( id="birthdateYears-field" )
+    private WebElement estimatedYears;
+
+    @FindBy( id="birthdateMonths-field")
+    private WebElement estimatedMonths;
+
+    @FindBy (id = "address1")
+    private WebElement addressOne;
+
+    @FindBy(id = "address2")
+    private WebElement addressTwo;
+
+    @FindBy(id="next-button")
+    private WebElement nextBtn;
+
+    @FindBy( id = "cityVillage")
+    private WebElement city;
+
+    @FindBy(id = "stateProvince")
+    private WebElement state;
+
+    @FindBy (id = "country")
+    private WebElement country;
+
+    @FindBy (id = "postalCode")
+    private WebElement postalCode;
+
+    @FindBy(id="fr1632-field")
+    private WebElement phone;
+
+
     private void fillOutDemographics(){
+softAssert.assertTrue(givenName.isDisplayed());
+familyName.click();
+
 
     }
 
@@ -55,7 +99,7 @@ public class RegisterPage {
 
     }
 
-    public void fillOutPatientInfo(){
+    public void fillOutPatientInfo(Map<String,String> data){
 
     }
 
