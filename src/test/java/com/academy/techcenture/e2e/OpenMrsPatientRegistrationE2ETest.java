@@ -22,7 +22,7 @@ public class OpenMrsPatientRegistrationE2ETest {
     }
 
     @Test
-    public void testRun(){
+    public void testRun() throws InterruptedException {
 
         LoginPage loginPage = new LoginPage(driver, softAssert);
         HomePage homePage= new HomePage(driver, softAssert);

@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
@@ -38,9 +39,12 @@ public class HomePage {
     private List<WebElement> homePageFunctionality;
 
 
-    public void verifyHomeActions() {
 
-        String[] functionality = {"Find Patient Record", "Active Visits", "Register a patient", "Capture Vitals"," Appointment Scheduling",
+
+
+    public void verifyHomeActions() throws InterruptedException {
+
+        String[] functionality = {"Find Patient Record", "Active Visits", "Register a patient", "Capture Vitals"," Appointment Scheduling","Register a patient",
            "Reports", "Data Management","Configure Metadata","System Administration"};
 
         softAssert.assertEquals(driver.getTitle(), "Home");
@@ -49,13 +53,14 @@ public class HomePage {
         softAssert.assertEquals(topOptions.size(), 4);
 
 
-        softAssert.assertEquals(homePageFunctionality.size(), 9);
+        softAssert.assertEquals(homePageFunctionality.size(), 10);
         for (int i = 0; i < homePageFunctionality.size(); i++) {
             softAssert.assertEquals(homePageFunctionality.get(i).getText(), functionality[i]);
 
         }
 
         homePageFunctionality.get(2).click();
+
 
 
     }
