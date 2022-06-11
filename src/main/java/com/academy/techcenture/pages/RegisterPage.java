@@ -26,14 +26,10 @@ public class RegisterPage {
     }
     @FindBy(className="logo")
     private WebElement logoIcon;
-    @FindBy( id="fr3887-field")
+    @FindBy(xpath = "//input[@id='fr7620-field' or @name='givenName']")
     private WebElement givenName;
-    @FindBy(id="fr4760-field")
+    @FindBy(xpath = "//input[@i;d='fr7037-field' or @name='familyName']")
     private WebElement familyName;
-    @FindBy(xpath = "//label[@for='fr1942-field']")
-    private WebElement givenLabel;
-    @FindBy(id = "fr1942-field")
-    private WebElement givenInput;
     @FindBy(id="checkbox-unknown-patient")
     private WebElement boxCheck;
     @FindBy(xpath =" //label[@for='checkbox-unknown-patient]")
@@ -79,13 +75,33 @@ public class RegisterPage {
     @FindBy (id = "postalCode")
     private WebElement postalCode;
 
-    @FindBy(id="fr1632-field")
-    private WebElement phone;
+    @FindBy(xpath = "//input[@id='fr7957-field' or @name='phoneNumber']")
+    private WebElement phoneNumber;
+    @FindBy (xpath = "//select[@id='relationship_type']//option")
+    private WebElement patientRelated;
+    @FindBy (xpath ="//input[contains(@class,'person-typeahead')]")
+    private WebElement personNameRelated;
 
 
-    private void fillOutDemographics(){
-softAssert.assertTrue(givenName.isDisplayed());
-familyName.click();
+
+
+
+
+
+
+
+
+        private void fillOutDemographics(Map<String,String> data){
+            softAssert.assertTrue(logoIcon.isDisplayed());
+
+   softAssert.assertTrue(givenName.isDisplayed());
+   givenName.sendKeys(data.get("givenName"));
+   familyName.sendKeys(data.get("familyName"));
+   unidentifiedPatient.sendKeys(data.get("gender"));
+   greenBtn.click();
+
+
+
 
 
     }
