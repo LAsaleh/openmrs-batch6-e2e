@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
@@ -17,6 +19,7 @@ public class RegisterPage {
     private WebDriver driver;
     private WebDriverWait wait;
     private SoftAssert softAssert;
+
     public RegisterPage(WebDriver driver, SoftAssert softAssert) {
         this.driver = driver;
         this.softAssert = softAssert;
@@ -24,89 +27,119 @@ public class RegisterPage {
         PageFactory.initElements(driver, this);
 
     }
-    @FindBy(className="logo")
+
+    @FindBy(className = "logo")
     private WebElement logoIcon;
-    @FindBy( id="fr3887-field")
+    @FindBy(name="givenName")
     private WebElement givenName;
-    @FindBy(id="fr4760-field")
+    @FindBy(name="familyName")
     private WebElement familyName;
-    @FindBy(xpath = "//label[@for='fr1942-field']")
-    private WebElement givenLabel;
-    @FindBy(id = "fr1942-field")
-    private WebElement givenInput;
-    @FindBy(id="checkbox-unknown-patient")
+    @FindBy(id = "checkbox-unknown-patient")
     private WebElement boxCheck;
-    @FindBy(xpath =" //label[@for='checkbox-unknown-patient]")
+    @FindBy(xpath = "//label[@for='checkbox-unknown-patient']")
     private WebElement unidentifiedPatient;
-    @FindBy(id="next-button")
+    @FindBy(id = "next-button")
     private WebElement greenBtn;
-    @FindBy(id="gender-field")
+    @FindBy(id = "gender-field")
     private WebElement genderField;
 
-    @FindBy(id="birthdateDay-field")
+    @FindBy(id = "birthdateDay-field")
     private WebElement birthday;
 
-    @FindBy( id="birthdateMonth-field" )
+    @FindBy(id = "birthdateMonth-field")
     private WebElement birthdayMonth;
 
-    @FindBy( id="birthdateYear-field")
+    @FindBy(id = "birthdateYear-field")
     private WebElement birthdayYear;
 
-    @FindBy( id="birthdateYears-field" )
+    @FindBy(id = "birthdateYears-field")
     private WebElement estimatedYears;
 
-    @FindBy( id="birthdateMonths-field")
+    @FindBy(id = "birthdateMonths-field")
     private WebElement estimatedMonths;
 
-    @FindBy (id = "address1")
+    @FindBy(id = "address1")
     private WebElement addressOne;
 
     @FindBy(id = "address2")
     private WebElement addressTwo;
 
-    @FindBy(id="next-button")
+    @FindBy(id = "next-button")
     private WebElement nextBtn;
 
-    @FindBy( id = "cityVillage")
+    @FindBy(id = "cityVillage")
     private WebElement city;
 
     @FindBy(id = "stateProvince")
     private WebElement state;
 
-    @FindBy (id = "country")
+    @FindBy(id = "country")
     private WebElement country;
 
-    @FindBy (id = "postalCode")
+    @FindBy(id = "postalCode")
     private WebElement postalCode;
 
-    @FindBy(id="fr1632-field")
-    private WebElement phone;
+    @FindBy(name="phoneNumber")
+    private WebElement phoneNumber;
+    @FindBy(xpath = "//select[@id='relationship_type']//option")
+    private WebElement patientRelated;
+    @FindBy(xpath = "//input[contains(@class,'person-typeahead')]")
+    private WebElement personNameRelated;
 
 
-    private void fillOutDemographics(){
-softAssert.assertTrue(givenName.isDisplayed());
-familyName.click();
+    private void fillOutDemographics(Map<String, String> data) throws InterruptedException {
+        softAssert.assertTrue(logoIcon.isDisplayed());
 
+        softAssert.assertTrue(givenName.isDisplayed());
+        givenName.sendKeys(data.get("givenName"));
+        familyName.sendKeys(data.get("familyName"));
+        softAssert.assertEquals(unidentifiedPatient.getText().trim(),"Unidentified Patient");
+        wait.until(ExpectedConditions.visibilityOf(unidentifiedPatient));
+        softAssert.assertTrue(greenBtn.isEnabled());
+        greenBtn.click();
+        Select select=new Select(genderField);
+        select.selectByVisibleText(data.get("gender"));
+        greenBtn.click();
+        if(data.get("ifDob").equalsIgnoreCase("yes")){
+            String dateOfBirth = data.get("dateOfBirth");
+            String[] splitDob = dateOfBirth.split("/");
+            int day = Integer.parseInt(splitDob[1]);
+            birthday.sendKeys(day+"");
+            String month= Integer.parseInt(splitDob[0]) +"";
+            Select select1=new Select(birthdayMonth);
+            select1.selectByValue(month);
+            int year = Integer.parseInt(splitDob[2]);
+            birthdayYear.sendKeys(year+"");
+
+        }else{
+            String estimatedYears = data.get("estimatedYears");
+            estimatedYears =  estimatedYears.substring(0, estimatedYears.indexOf("."));
+
+            this.estimatedYears.sendKeys(estimatedYears);
+
+            String estimatedMonths = data.get("estimatedMonths"); //2.0
+            estimatedMonths  =estimatedMonths.substring(0,estimatedMonths.indexOf(".")); //1
+            this.estimatedMonths.sendKeys(estimatedMonths);
+        }
+
+
+        Thread.sleep(1000);
 
     }
 
 
-    private void fillOutAddressInfo(){
+    private void fillOutAddressInfo() {
 
     }
 
-    private void fillOutRelationshipInfo(){
+    private void fillOutRelationshipInfo() {
 
     }
 
-    public void fillOutPatientInfo(Map<String,String> data){
+    public void fillOutPatientInfo(Map<String, String> data) throws InterruptedException {
+        fillOutDemographics(data);
 
     }
-
-
-
-
-
 
 
 }
