@@ -44,7 +44,7 @@ public class HomePage {
 
     public void verifyHomeActions() throws InterruptedException {
 
-        String[] functionality = {"Find Patient Record", "Active Visits", "Register a patient", "Capture Vitals"," Appointment Scheduling","Register a patient",
+        String[] functionality = {"Find Patient Record", "Active Visits", "Awaiting Admission", "Register a patient", "Capture Vitals"," Appointment Scheduling","Register a patient",
            "Reports", "Data Management","Configure Metadata","System Administration"};
 
         softAssert.assertEquals(driver.getTitle(), "Home");
@@ -53,13 +53,13 @@ public class HomePage {
         softAssert.assertEquals(topOptions.size(), 4);
 
 
-        softAssert.assertEquals(homePageFunctionality.size(), 10);
+        softAssert.assertEquals(homePageFunctionality.size(), 11);
         for (int i = 0; i < homePageFunctionality.size(); i++) {
             softAssert.assertEquals(homePageFunctionality.get(i).getText(), functionality[i]);
 
         }
 
-        homePageFunctionality.get(2).click();
+        homePageFunctionality.get(3).click();
 
 
 
