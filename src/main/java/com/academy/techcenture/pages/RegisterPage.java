@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 
 public class RegisterPage {
@@ -81,24 +82,35 @@ public class RegisterPage {
 
     @FindBy(name="phoneNumber")
     private WebElement phoneNumber;
-    @FindBy(xpath = "//select[@id='relationship_type']//option")
+    @FindBy(id = "relationship_type")
     private WebElement patientRelated;
     @FindBy(xpath = "//input[contains(@class,'person-typeahead')]")
     private WebElement personNameRelated;
+    @FindBy(xpath = "//div[@id='dataCanvas']//span")
+    private List<WebElement> confirmationList;
+
+
 
 
     private void fillOutDemographics(Map<String, String> data) throws InterruptedException {
         softAssert.assertTrue(logoIcon.isDisplayed());
 
         softAssert.assertTrue(givenName.isDisplayed());
-        givenName.sendKeys(data.get("givenName"));
-        familyName.sendKeys(data.get("familyName"));
+
+        String givenName1 = data.get("givenName");
+        givenName.sendKeys(givenName1);
+
+
+        String familyName1 = data.get("familyName");
+        familyName.sendKeys(familyName1);
+
         softAssert.assertEquals(unidentifiedPatient.getText().trim(),"Unidentified Patient");
         wait.until(ExpectedConditions.visibilityOf(unidentifiedPatient));
         softAssert.assertTrue(greenBtn.isEnabled());
         greenBtn.click();
         Select select=new Select(genderField);
-        select.selectByVisibleText(data.get("gender"));
+        String gender1 = data.get("gender");
+        select.selectByVisibleText(gender1);
         greenBtn.click();
         if(data.get("ifDob").equalsIgnoreCase("yes")){
             String dateOfBirth = data.get("dateOfBirth");
@@ -124,22 +136,70 @@ public class RegisterPage {
 
 
         Thread.sleep(1000);
+        greenBtn.click();
 
     }
 
 
-    private void fillOutAddressInfo() {
+    private void fillOutAddressInfo(Map<String,String>data) {
+        String adress1 = data.get("adress1");
+        addressOne.sendKeys(adress1);
+
+        String adress2 = data.get("adress2");
+        addressTwo.sendKeys(adress2);
+        String cityVillage1 = data.get("cityVillage");
+        city.sendKeys(cityVillage1);
+        String stateProvince1 = data.get("stateProvince");
+        state.sendKeys(stateProvince1);
+        String country1 = data.get("country");
+        country.sendKeys(country1);
+        String postalCode1 = data.get("postalCode");
+        postalCode.sendKeys(postalCode1);
+        greenBtn.click();
+
+
+        String phoneNumber1 = data.get("phoneNumber");
+        phoneNumber.sendKeys(phoneNumber1);
+        greenBtn.click();
+
+
+
+
 
     }
 
-    private void fillOutRelationshipInfo() {
+    private void fillOutRelationshipInfo(Map<String,String>data) {
+        Select select = new Select(patientRelated);
+        select.selectByVisibleText(data.get("relationshipType"));
+
+        personNameRelated.sendKeys(data.get("personName"));
+        greenBtn.click();
+
+
 
     }
+
+    private void ConfirmationDetails(Map<String,String>data){
+
+        for (int i = 0; i <confirmationList.size(); i++) {
+
+
+        }
+
+
+    }
+
+
+
+
 
     public void fillOutPatientInfo(Map<String, String> data) throws InterruptedException {
         fillOutDemographics(data);
+        fillOutAddressInfo(data);
+        fillOutRelationshipInfo(data);
 
     }
+
 
 
 }
