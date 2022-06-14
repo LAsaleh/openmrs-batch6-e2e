@@ -31,16 +31,22 @@ public class RegisterPage {
 
     @FindBy(className = "logo")
     private WebElement logoIcon;
+
     @FindBy(name="givenName")
     private WebElement givenName;
+
     @FindBy(name="familyName")
     private WebElement familyName;
+
     @FindBy(id = "checkbox-unknown-patient")
     private WebElement boxCheck;
+
     @FindBy(xpath = "//label[@for='checkbox-unknown-patient']")
     private WebElement unidentifiedPatient;
+
     @FindBy(id = "next-button")
     private WebElement greenBtn;
+
     @FindBy(id = "gender-field")
     private WebElement genderField;
 
@@ -82,12 +88,18 @@ public class RegisterPage {
 
     @FindBy(name="phoneNumber")
     private WebElement phoneNumber;
+
     @FindBy(id = "relationship_type")
     private WebElement patientRelated;
+
     @FindBy(xpath = "//input[contains(@class,'person-typeahead')]")
     private WebElement personNameRelated;
-    @FindBy(xpath = "//div[@id='dataCanvas']//span")
+
+    @FindBy(xpath = "//div[@id='dataCanvas']//p")
     private List<WebElement> confirmationList;
+
+    @FindBy(id = "submit")
+    private WebElement greenConfirmBtn;
 
 
 
@@ -108,10 +120,12 @@ public class RegisterPage {
         wait.until(ExpectedConditions.visibilityOf(unidentifiedPatient));
         softAssert.assertTrue(greenBtn.isEnabled());
         greenBtn.click();
+
         Select select=new Select(genderField);
         String gender1 = data.get("gender");
         select.selectByVisibleText(gender1);
         greenBtn.click();
+
         if(data.get("ifDob").equalsIgnoreCase("yes")){
             String dateOfBirth = data.get("dateOfBirth");
             String[] splitDob = dateOfBirth.split("/");
@@ -124,14 +138,15 @@ public class RegisterPage {
             birthdayYear.sendKeys(year+"");
 
         }else{
-            String estimatedYears = data.get("estimatedYears");
-            estimatedYears =  estimatedYears.substring(0, estimatedYears.indexOf("."));
+//            String estimatedYearsStr = data.get("estimatedYears");
+         //   estimatedYears =  estimatedYears.substring(0, estimatedYears.indexOf("."));
 
-            this.estimatedYears.sendKeys(estimatedYears);
+            estimatedYears.sendKeys(data.get("estimatedYears"));
 
-            String estimatedMonths = data.get("estimatedMonths"); //2.0
-            estimatedMonths  =estimatedMonths.substring(0,estimatedMonths.indexOf(".")); //1
-            this.estimatedMonths.sendKeys(estimatedMonths);
+         //   String estimatedMonths = data.get("estimatedMonths"); //2.0
+       //     estimatedMonths  =estimatedMonths.substring(0,estimatedMonths.indexOf(".")); //1
+
+                 estimatedMonths.sendKeys(data.get("estimatedMonths"));
         }
 
 
@@ -147,16 +162,19 @@ public class RegisterPage {
 
         String adress2 = data.get("adress2");
         addressTwo.sendKeys(adress2);
+
         String cityVillage1 = data.get("cityVillage");
         city.sendKeys(cityVillage1);
+
         String stateProvince1 = data.get("stateProvince");
         state.sendKeys(stateProvince1);
+
         String country1 = data.get("country");
         country.sendKeys(country1);
+
         String postalCode1 = data.get("postalCode");
         postalCode.sendKeys(postalCode1);
         greenBtn.click();
-
 
         String phoneNumber1 = data.get("phoneNumber");
         phoneNumber.sendKeys(phoneNumber1);
@@ -179,15 +197,27 @@ public class RegisterPage {
 
     }
 
-    private void ConfirmationDetails(Map<String,String>data){
+    private void confirmationDetails(Map<String,String>data){
 
         for (int i = 0; i <confirmationList.size(); i++) {
-
-
+            softAssert.assertEquals(confirmationList.get(i), 6);
         }
 
+        softAssert.assertEquals(confirmationList.get(0).getText().split(":")[1].trim(), data.get("firstName")+ ", "+data.get("familyName"));
+        softAssert.assertEquals(confirmationList.get(1).getText().split(":")[1].trim(), data.get("gender"));
+        if(data.get("ifDob").equalsIgnoreCase("y")) {
+            softAssert.assertEquals(confirmationList.get(2).getText().split(":")[1].trim(), data.get("dateOfBirth").replace("-", ", "));
+        }else{
+            softAssert.assertEquals(confirmationList.get(2).getText().split(":")[1].trim(), data.get("estimatedYears")+"year(s), "+data.get("estimatedMonths")+" month(s)");
+        }
+        softAssert.assertEquals(confirmationList.get(3).getText().split(":")[1].trim(), data.get("adress1")+", "+data.get("adress2")+", "+data.get("cityVillage")+", "+data.get("stateProvince")+", "+data.get("country")+", "+data.get("postalCode"));
+        softAssert.assertEquals(confirmationList.get(4).getText().split(":")[1].trim(), data.get("phoneNumber"));
+        softAssert.assertEquals(confirmationList.get(5).getText().split(":")[1].trim(), data.get("relationshipType")+", "+data.get("personName"));
 
+        softAssert.assertTrue(greenConfirmBtn.isEnabled());
+        greenConfirmBtn.click();
     }
+
 
 
 
@@ -197,6 +227,7 @@ public class RegisterPage {
         fillOutDemographics(data);
         fillOutAddressInfo(data);
         fillOutRelationshipInfo(data);
+        confirmationDetails(data);
 
     }
 

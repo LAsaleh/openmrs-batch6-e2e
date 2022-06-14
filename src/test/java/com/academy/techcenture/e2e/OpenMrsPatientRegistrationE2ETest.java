@@ -2,9 +2,7 @@ package com.academy.techcenture.e2e;
 
 import com.academy.techcenture.config.ConfigReader;
 import com.academy.techcenture.config.Driver;
-import com.academy.techcenture.pages.HomePage;
-import com.academy.techcenture.pages.LoginPage;
-import com.academy.techcenture.pages.RegisterPage;
+import com.academy.techcenture.pages.*;
 import com.academy.techcenture.util.ExcelReader;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
@@ -33,9 +31,14 @@ public class OpenMrsPatientRegistrationE2ETest {
         LoginPage loginPage = new LoginPage(driver, softAssert);
         HomePage homePage = new HomePage(driver, softAssert);
         RegisterPage registerPage = new RegisterPage(driver, softAssert);
+        PatientDetailsPage patientDetailsPage = new PatientDetailsPage(driver, softAssert);
+        FindPatientRecordPage findPatientRecordPage = new FindPatientRecordPage(driver, softAssert);
         loginPage.logIn();
         homePage.verifyHomeActions();
         registerPage.fillOutPatientInfo(data);
+        patientDetailsPage.verfiyingPatientsDetails(data);
+        findPatientRecordPage.verifyNewPatientTable();
+
     }
 
     @DataProvider(name="data")
@@ -46,7 +49,7 @@ public class OpenMrsPatientRegistrationE2ETest {
 
 
     @AfterMethod
-    public void clearUp(){
+    public void cleanUp(){
         if (driver != null){
             driver.quit();
         }
