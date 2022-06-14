@@ -80,7 +80,7 @@ public class PatientDetailsPage {
             softAssert.assertEquals(topSectionDob.getText().split(" ")[2].trim(), data.get("dateOfBirth").replace("-", "."));
     }else {
             softAssert.assertEquals(topSectionDob.getText().split(" ")[0].trim(), data.get("estimatedYears")+"year(s)");
-            softAssert.assertEquals(topSectionDob.getText().split(" ")[0].trim(), data.get("estimatedMonths")+"month(s)" );
+
 
             softAssert.assertTrue(topSectionID.isDisplayed());
 

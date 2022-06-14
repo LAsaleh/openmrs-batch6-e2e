@@ -20,6 +20,7 @@ public class Driver {
     public static WebDriver getDriver(){
 
         String browser = ConfigReader.getProperty("browser");
+
         switch (browser){
             case "chrome":
                 WebDriverManager.chromedriver().setup();
@@ -40,8 +41,8 @@ public class Driver {
         }
 
         if (driver != null){
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Long.parseLong(ConfigReader.getProperty("implicitWaits"))));
+            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(Long.parseLong(ConfigReader.getProperty("pageLoadTime"))));
             driver.manage().window().maximize();
 
             return driver;

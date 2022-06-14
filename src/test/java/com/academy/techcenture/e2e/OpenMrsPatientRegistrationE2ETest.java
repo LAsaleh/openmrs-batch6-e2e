@@ -41,10 +41,10 @@ public class OpenMrsPatientRegistrationE2ETest {
 
     }
 
-    @DataProvider(name="data")
+    @DataProvider(name = "data")
     public Object[][] registration() {
-        ExcelReader excelReadr = new ExcelReader("src/main/resources/testData/Data.xlsx", "data");
-        return excelReadr.getData();
+        ExcelReader excelReader = new ExcelReader("src/main/resources/testData/Data.xlsx", "data");
+        return excelReader.getData();
     }
 
 
